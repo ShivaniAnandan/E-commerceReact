@@ -1,0 +1,66 @@
+/* Navbar.css */
+
+/* Style for the navbar */
+.navbar {
+    background-color: #343a40;
+}
+
+/* Style for the navbar brand (logo) */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Style for the navbar links */
+.nav-link {
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Style for the active navbar link */
+.nav-link.active {
+    border-bottom: 2px solid #ff6347; /* Add a bottom border to highlight active link */
+}
+
+/* Style for the cart button */
+.btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Style for the cart icon */
+.fa-shopping-cart {
+    font-size: 1.5rem;
+}
+
+/* Style for the cart badge */
+.badge {
+    background-color: #ff6347;
+    padding: 0.5rem;
+    border-radius: 50%;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .nav-link {
+        font-size: 1rem;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+    }
+
+    .fa-shopping-cart {
+        font-size: 1.2rem;
+    }
+
+    .badge {
+        font-size: 0.9rem;
+        padding: 0.3rem;
+    }
+}

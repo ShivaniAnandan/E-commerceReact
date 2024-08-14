@@ -1,0 +1,269 @@
+/* Products Styling */
+.card-body{
+  color: #FFFFFF;
+  
+}
+
+/* .cart{
+  background-color: lightgrey; 
+} */
+
+.checkout{
+  background-color: yellow;
+  font-weight: bolder;
+}
+
+button img {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+
+.price-details p{
+  font-weight: bold;
+}
+.price-details{
+  padding: 3rem;
+}
+
+.col-md-2 img{
+  width: 100%;
+  /* height:280px; */
+  padding:0px;
+}
+
+@media screen and (max-width: 768px) {
+  .home{
+      flex-direction: column;
+  }
+  .home img{
+      width: 100% !important;
+  }
+}
+
+
+/* Navbar styling */
+.search-field{
+  width:700px;
+}
+.navbar{
+  padding: 1rem 2rem;
+}
+.logo-image{
+  width: 80px;
+  
+}
+
+/* src/App.css */
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.MuiSvgIcon-root {
+  color: #1976d2; /* Adjust as needed */
+}
+
+.MuiButton-containedPrimary {
+  background-color: #1976d2; /* Adjust as needed */
+}
+
+
+/* Home Styling */
+.category-box {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.category-item {
+  width: 23%;
+  margin-bottom: 20px;
+}
+
+.category-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.category-item h5 {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.jewelery{
+  width: 88% !important;
+}
+
+/* product styling */
+.product-card {
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  width: 100%;
+  max-width: 300px;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+  transition: transform 0.3s;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.card-info {
+  text-align: center;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.btn {
+  font-size: 0.9rem;
+  border-radius: 20px;
+  padding: 5px 20px;
+}
+
+@media (max-width: 600px) {
+  .filter-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .col-lg-9 {
+    padding-top: 20px;
+  }
+}
+
+/* ProfilePage styling */
+/* ProfilePage.css */
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.profile-form {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.profile-form .form-label {
+  font-weight: bold;
+}
+
+.profile-form .form-control {
+  border-radius: 5px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+/* Checkout styling */
+/* checkout.css */
+.checkout-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.checkout-container h1 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.payment-details {
+  text-align: center;
+  color: #555;
+}
+
+.order-success {
+  text-align: center;
+  color: #4caf50;
+}
+
+.order-success h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.amount-to-pay {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #ff3f6c;
+  font-weight: 600;
+}
+
+.payment-methods {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.payment-methods h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.payment-methods .payment-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.payment-methods .radio-input {
+  margin-right: 10px;
+}
+
+.payment-methods .payment-label {
+  font-size: 16px;
+  color: #333;
+}
+
+.confirm-button {
+  background-color: #ff3f6c;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}

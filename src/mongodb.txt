@@ -1,0 +1,244 @@
+1. Find all the topics and tasks which are taught in the month of October
+
+command1
+db.topics.find({
+  date: {
+    $gte: ISODate("2020-10-01"),
+    $lt: ISODate("2020-11-01")
+  }
+});
+
+output1
+{
+  _id: ObjectId('66b5bb753137fd70ec3d2823'),
+  topic_name: 'Introduction to MongoDB',
+  date: 2020-10-05T00:00:00.000Z
+}
+{
+  _id: ObjectId('66b5bb753137fd70ec3d2824'),
+  topic_name: 'Advanced MongoDB',
+  date: 2020-10-20T00:00:00.000Z
+}
+{
+  _id: ObjectId('66b5bb753137fd70ec3d2825'),
+  topic_name: 'MongoDB Fearures',
+  date: 2020-10-25T00:00:00.000Z
+}
+
+command2
+db.tasks.find({
+  date: {
+    $gte: ISODate("2020-10-01"),
+    $lt: ISODate("2020-11-01")
+  }
+});
+
+output2
+{
+  _id: ObjectId('66b5bcdf3137fd70ec3d2826'),
+  task_name: 'MongoDB Basics',
+  user_id: ObjectId('66b48dd622c260bf01d5cd2d'),
+  date: 2020-10-05T00:00:00.000Z,
+  status: 'submitted'
+}
+{
+  _id: ObjectId('66b5bcdf3137fd70ec3d2827'),
+  task_name: 'Advanced MongoDB',
+  user_id: ObjectId('66b48dd622c260bf01d5cd2e'),
+  date: 2020-10-20T00:00:00.000Z,
+  status: 'not submitted'
+}
+{
+  _id: ObjectId('66b5bcdf3137fd70ec3d2828'),
+  task_name: 'MongoDB',
+  user_id: ObjectId('66b48dd622c260bf01d5cd2f'),
+  date: 2020-10-25T00:00:00.000Z,
+  status: 'submitted'
+}
+
+2. Find all the company drives which appeared between 15 Oct 2020 and 31 Oct 2020
+
+command
+db.companydrives.find({
+  date: {
+    $gte: ISODate("2020-10-15"),
+    $lt: ISODate("2020-11-01")
+  }
+});
+
+output
+{
+  _id: ObjectId('66b5be553137fd70ec3d2829'),
+  company_name: 'Tech Corp',
+  date: 2020-10-18T00:00:00.000Z,
+  user_ids: [
+    ObjectId('66b48dd622c260bf01d5cd2d'),
+    ObjectId('66b48dd622c260bf01d5cd2e')
+  ]
+}
+{
+  _id: ObjectId('66b5be553137fd70ec3d282a'),
+  company_name: 'Innovate Ltd',
+  date: 2020-10-25T00:00:00.000Z,
+  user_ids: [
+    ObjectId('66b48dd622c260bf01d5cd2e')
+  ]
+}
+{
+  _id: ObjectId('66b5be553137fd70ec3d282b'),
+  company_name: 'CTS',
+  date: 2020-10-30T00:00:00.000Z,
+  user_ids: [
+    ObjectId('66b48dd622c260bf01d5cd2f')
+  ]
+}
+
+3. Find all the company drives and students who appeared for the placement
+
+command
+db.companydrives.aggregate([
+  {
+    $lookup: {
+      from: "users",
+      localField: "user_ids",
+      foreignField: "_id",
+      as: "students"
+    }
+  }
+]);
+
+output
+{
+  _id: ObjectId('66b5be553137fd70ec3d2829'),
+  company_name: 'Tech Corp',
+  date: 2020-10-18T00:00:00.000Z,
+  user_ids: [
+    ObjectId('66b48dd622c260bf01d5cd2d'),
+    ObjectId('66b48dd622c260bf01d5cd2e')
+  ],
+  students: [
+    {
+      _id: ObjectId('66b48dd622c260bf01d5cd2e'),
+      name: 'Bob',
+      email: 'bob@example.com',
+      mentor_id: ObjectId('66b5c02b3137fd70ec3d282c')
+    },
+    {
+      _id: ObjectId('66b48dd622c260bf01d5cd2d'),
+      name: 'Alice',
+      email: 'alice@example.com',
+      mentor_id: ObjectId('66b5c02b3137fd70ec3d282c')
+    }
+  ]
+}
+{
+  _id: ObjectId('66b5be553137fd70ec3d282a'),
+  company_name: 'Innovate Ltd',
+  date: 2020-10-25T00:00:00.000Z,
+  user_ids: [
+    ObjectId('66b48dd622c260bf01d5cd2e')
+  ],
+  students: [
+    {
+      _id: ObjectId('66b48dd622c260bf01d5cd2e'),
+      name: 'Bob',
+      email: 'bob@example.com',
+      mentor_id: ObjectId('66b5c02b3137fd70ec3d282c')
+    }
+  ]
+}
+{
+  _id: ObjectId('66b5be553137fd70ec3d282a'),
+  company_name: 'Innovate Ltd',
+  date: 2020-10-25T00:00:00.000Z,
+  user_ids: [
+    ObjectId('66b48dd622c260bf01d5cd2e')
+  ],
+  students: [
+    {
+      _id: ObjectId('66b48dd622c260bf01d5cd2e'),
+      name: 'Bob',
+      email: 'bob@example.com',
+      mentor_id: ObjectId('66b5c02b3137fd70ec3d282c')
+    }
+  ]
+}
+
+4. Find the number of problems solved by the user in codekata
+
+command
+db.codekata.aggregate([
+  {
+    $group: {
+      _id: "$user_id",
+      total_problems_solved: { $sum: "$problems_solved" }
+    }
+  }
+]);
+
+output
+{
+  _id: ObjectId('66b48dd622c260bf01d5cd2f'),
+  total_problems_solved: 30
+}
+{
+  _id: ObjectId('66b48dd622c260bf01d5cd2e'),
+  total_problems_solved: 40
+}
+{
+  _id: ObjectId('66b48dd622c260bf01d5cd2d'),
+  total_problems_solved: 50
+}
+
+5. Find all the mentors with mentees count more than 15
+
+command
+db.mentors.find({
+  $expr: {
+    $gt: [{ $size: "$mentee_ids" }, 15]
+  }
+});
+
+output
+Null(No matching data thatis no mentors with mentees count more than 15)
+
+6. Find the number of users who are absent and have not submitted tasks between 15 Oct 2020 and 31 Oct 2020
+
+command
+db.attendance.aggregate([
+  {
+    $match: {
+      date: { $gte: ISODate("2020-10-15"), $lt: ISODate("2020-11-01") },
+      status: "absent"
+    }
+  },
+  {
+    $lookup: {
+      from: "tasks",
+      localField: "user_id",
+      foreignField: "user_id",
+      as: "tasks"
+    }
+  },
+  {
+    $unwind: "$tasks"
+  },
+  {
+    $match: {
+      "tasks.date": { $gte: ISODate("2020-10-15"), $lt: ISODate("2020-11-01") },
+      "tasks.status": "not submitted"
+    }
+  },
+  {
+    $group: {
+      _id: "$user_id",
+      count: { $sum: 1 }
+    }
+  }
+]);
+
+output
+{
+  _id: ObjectId('66b48dd622c260bf01d5cd2e'),
+  count: 1
+}

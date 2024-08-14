@@ -1,0 +1,61 @@
+/* Products.css */
+
+.products-container {
+    padding: 20px;
+  }
+  
+  .card.glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .card.glass-effect:hover {
+    transform: scale(1.05);
+  }
+  
+  .card-img-top {
+    width: 100%; /* Make the image take the full width of the card */
+    height: 200px; /* Adjust height as needed */
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white;
+  }
+  
+  .card-description {
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 10px;
+  }
+  
+  .card-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+  }
+  
+  .btn-light {
+    color: white;
+    border: 1px solid #fff;
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+  .btn-light:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #ff6347;
+  }
+  
