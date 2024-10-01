@@ -1,13 +1,13 @@
 // src/App.js
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Products from './components/Products';
 import Cart1 from './components/Cart';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { store } from './redux/store';
 import Navbars from './components/Navbars';
 import Register from './components/Register';
@@ -15,10 +15,14 @@ import Login from './components/Login';
 import Checkout from './components/Checkout';
 import ProfilePage from './components/ProfilePage';
 import SearchResults from './components/SearchResults';
+import { login } from './redux/UserSlice';
+import PaymentSuccess from './components/PaymentSuccess';
+import PaymentFailure from './components/PaymentFailure';
+import Orders from './components/MyOrdersPage';
+import MyOrdersPage from './components/MyOrdersPage';
+import ForgetPassword from './components/ForgetPassword';
+import ResetPassword from './components/ResetPassword';
 function App() {
-  const [name,setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   //creating products data
 //   const products = [
 //     {
@@ -82,13 +86,22 @@ function App() {
 //         "image":"https://m.media-amazon.com/images/I/51M0gplIVFL.jpg"
 //     }
 // ]
+// const dispatch = useDispatch();
 
+// useEffect(() => {
+//   // Check if there is a user in localStorage
+//   const storedUser = JSON.parse(localStorage.getItem('user'));
+//   if (storedUser) {
+//     // Dispatch login action to restore user state from localStorage
+//     dispatch(login(storedUser));
+//   }
+// }, [dispatch]);
   
 
 return (
   <>
     <BrowserRouter>
-      <Provider store={store}>
+      {/* <Provider store={store}> */}
         <div>
           <Navbars />
         </div>
@@ -96,13 +109,18 @@ return (
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/cart" element={<Cart1 />} />
-          <Route path="/register" element={<Register setName={setName} setEmail={setEmail} setPassword={setPassword} />} />
-          <Route path="/login" element={<Login email={email} password={password} name={name}/>} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/forget-password" element={<ForgetPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/search" element={<SearchResults />} />
+          <Route path="/paymentsuccess" element={<PaymentSuccess />} />
+          <Route path="/paymentfailure" element={<PaymentFailure />} />
+          <Route path="/myorders" element={<MyOrdersPage />} />
         </Routes>
-      </Provider>
+      {/* </Provider> */}
     </BrowserRouter>
   </>
 );

@@ -1,13 +1,14 @@
 import React from 'react';
-import { addItem, removeItem, updateQuantity } from '../redux/ProductSlice';
+import { addItem, clearCart, removeItem, updateQuantity } from '../redux/ProductSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Category } from '@mui/icons-material';
 
 const Cart = () => {
   const items = useSelector(state => state.cart.items);
   const totalQuantity = useSelector(state => state.cart.totalQuantity);
   const totalAmount = useSelector(state => state.cart.totalAmount);
-  // const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,14 +22,45 @@ const Cart = () => {
     dispatch(updateQuantity({ id, quantity: value }));
   };
 
-  // // Function to handle adding to cart
-  // const handleAddToCart = (item) => {
-  //   if (!isLoggedIn) {
-  //     navigate('/login'); // Redirect to login page if not logged in
-  //   } else {
-  //     dispatch(addItem(item)); // Add the whole item object to the cart
-  //   }
-  // };
+  const user = localStorage.getItem('user');
+  const userData = JSON.parse(user);
+  const userId = userData.id; // Replace 'id' with the actual key used to store the ID
+  console.log(userId); 
+  console.log(items);
+  // Function to handle checkout process
+  const handleCheckout = async () => {
+    try {
+      // Map items to the new format
+      const orderItems = items.map(item => ({
+      product: item.id,       // Change 'id' to 'product'
+      name: item.title,       // Change 'title' to 'name'
+      price: item.price,     // Include price if needed
+      description:item.description,
+      category:item.category,
+      image:item.image,
+      rating:item.rating,
+      countInStock:item.countInStock,
+      qty: item.quantity || 1, // Change 'quantity' to 'qty', default to 1 if not available
+      }));
+
+      const response = await axios.post('http://localhost:4000/api/orders/create-payment-intent', {
+        userId: userId, // Replace with the actual user ID
+        orderItems: orderItems,
+      });
+      const { sessionId } = response.data;
+
+      // Redirect to Stripe Checkout
+      const stripe = window.Stripe('pk_test_51PyvGlP0TQcdrbfkPZP7y7vVbxZNFZoKusYGXuI9ntX1IE8fy7jYwOnn01VlbjDcCMBUmlgmlyDhOIx0l8rHEcOZ00nGV3x4Al'); // Replace with your Stripe public key
+      await stripe.redirectToCheckout({ sessionId });
+
+       // Clear cart after successful payment
+      //  dispatch(clearCart());
+      //  localStorage.removeItem('cart');
+    } catch (error) {
+      console.error('Error during checkout:', error);
+      alert('Failed to redirect to payment page. Please try again.');
+    }
+  };
 
   return (
     <div className='cart'>
@@ -50,13 +82,6 @@ const Cart = () => {
                     <h5 className="card-title">{item.title}</h5>
                     <p className="card-text">{item.description}</p>
                     <p className="card-text">{item.price} rs</p>
-                    {/* Add to Cart Button */}
-                    {/* <button 
-                      className="btn btn-primary mt-3" 
-                      onClick={() => handleAddToCart(item)}
-                    >
-                      Add to Cart
-                    </button> */}
                   </div>
                 </div>
                 <div className='col-lg-4 col-md-4 col-sm-2 col-6'>
@@ -82,7 +107,7 @@ const Cart = () => {
             <p className='d-flex justify-content-around'>Shipping : <span>Free</span></p>
             <p className='d-flex justify-content-around'>Total :  <span>{totalAmount.toFixed(2)} rs</span></p>
             <div className="d-flex justify-content-center">
-            <button className="btn checkout mt-3" onClick={() => navigate('/checkout')}>Proceed to Checkout</button>
+              <button className="btn checkout mt-3" onClick={handleCheckout}>Proceed to Checkout</button>
             </div>
           </div>
         </>

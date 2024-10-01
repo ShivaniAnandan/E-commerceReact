@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addItem, removeItem, setProducts } from '../redux/ProductSlice';
 import { FaStar } from 'react-icons/fa'; // Import the star icon
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Products = () => {
   const [filter, setFilter] = useState({
@@ -17,12 +18,13 @@ const Products = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  console.log(items);
   // Fetch products from the API when the component mounts
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('https://fakestoreapi.com/products');
-        const data = await response.json();
+        const response = await axios.get('http://localhost:4000/api/products');
+        const data = await response.data;
         dispatch(setProducts(data));
         console.log(data);
       } catch (error) {
@@ -105,7 +107,7 @@ const Products = () => {
       });
   
     const matchesRating =
-      rating === 'all' || product.rating.rate >= parseFloat(rating);
+      rating === 'all' || product.rating >= parseFloat(rating);
   
     return matchesCategory && matchesPrice && matchesRating;
   });
@@ -260,7 +262,8 @@ const Products = () => {
     <div className="col-lg-9">
           <div className="row">
             {filteredProducts.map((item, index) => {
-              const isInCart = items.some((cartItem) => cartItem.id === item.id);
+              // console.log(item);
+              const isInCart = items.some((cartItem) => cartItem.id === item._id);
               return (
                 <div
                   className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center"
@@ -305,7 +308,7 @@ const Products = () => {
                         fontSize: '12px',
                       }}
                     >
-                      {item.rating.rate} <FaStar color="gold" />
+                      {item.rating} <FaStar color="gold" />
                     </div>
                     <div
                       className="card-body p-2"
@@ -322,7 +325,7 @@ const Products = () => {
                         <button
                           className={`btn ${isInCart ? 'btn-danger' : 'btn-primary'} mt-2`}
                           onClick={() =>
-                            isInCart ? removeFromCart(item.id) : handleAddToCart(item)
+                            isInCart ? removeFromCart(item._id) : handleAddToCart(item)
                           }
                         >
                           {isInCart ? 'Remove from Cart' : 'Add to Cart'}

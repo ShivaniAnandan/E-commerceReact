@@ -1,34 +1,24 @@
-// src/Login.jsx
-
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { TextField, Button, Box, InputAdornment } from '@mui/material';
+import { TextField, Button, Box, InputAdornment, Typography } from '@mui/material';
 import { Email, Lock } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/UserSlice';
+import axios from 'axios';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
 });
 
-const Login = ({ email, password, name }) => {
+const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const profileImages = [
-    'https://t3.ftcdn.net/jpg/02/40/30/56/240_F_240305699_X3ky3vcpPRDNBtg1qjmLW7ntzPGU0eGN.jpg',
-    'https://t4.ftcdn.net/jpg/05/74/97/67/240_F_574976795_xGCzNlYpDw7wf6gSWFLVaFuTGhOMuaTV.jpg',
-    'https://t3.ftcdn.net/jpg/06/01/50/96/240_F_601509638_jDwIDvlnryPRhXPsBeW1nXv90pdlbykC.jpg',
-    'https://t4.ftcdn.net/jpg/05/80/60/33/240_F_580603305_ysEbDBvHCKM9TyzEINHyW614NWLdTe0b.jpg',
-    'https://t4.ftcdn.net/jpg/05/47/35/41/240_F_547354169_c1lbO3x3Xw5rwr9WThaHUamGSEZI4IsP.jpg',
-    'https://t4.ftcdn.net/jpg/07/31/57/43/240_F_731574325_KUHqpDJBMI4T4dIeoMS7GH0zDSQj0VlT.jpg',
-    'https://t4.ftcdn.net/jpg/05/59/46/33/240_F_559463395_dBqVnSCQ479taoyYSaohffGOLQiI3x5w.jpg',
-    'https://t4.ftcdn.net/jpg/07/57/31/69/240_F_757316903_KiJ2jGy5vQ0dB9ILtjFo6p48UZ7DAoxa.jpg',
-    'https://t3.ftcdn.net/jpg/06/21/27/04/240_F_621270406_n7Vx7a5RuRJVmaI1AEltnsfA2SjkOrrr.jpg',
-    'https://t4.ftcdn.net/jpg/03/28/94/79/240_F_328947974_26fQsrAPA5cLoL9fSfWZhLM58AQO6rCz.jpg',
+    // Add random profile image URLs here...
   ];
 
   const getRandomProfileImage = () => {
@@ -36,21 +26,39 @@ const Login = ({ email, password, name }) => {
     return profileImages[randomIndex];
   };
 
-  const storedUser = JSON.parse(localStorage.getItem('user'));
+  const handleLogin = async (values) => {
+    try {
+      const response = await axios.post('http://localhost:4000/api/users/login', {
+        email: values.email,
+        password: values.password,
+      }, { withCredentials: true });
+
+      const { token, user } = response.data;
+
+      // Store the token in localStorage
+      localStorage.setItem('token', token);
+
+      // Dispatch login action to store user data
+      dispatch(login({
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        profileImage: getRandomProfileImage(),
+      }));
+
+      // Navigate to the home page
+      navigate('/');
+    } catch (error) {
+      alert('Invalid email or password');
+      console.error('Login error:', error);
+    }
+  };
 
   return (
     <Formik
-      initialValues={{ email: '', password: '' , name:''}}
+      initialValues={{ email: '', password: '' }}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
-        if (storedUser && values.email === storedUser.email && values.password === storedUser.password) {
-          const profileImage = getRandomProfileImage();
-          dispatch(login({ name: storedUser.name, email: values.email, profileImage }));
-          navigate('/');
-        } else {
-          alert('Invalid email or password');
-        }
-      }}
+      onSubmit={handleLogin}
     >
       {({ errors, touched }) => (
         <Form>
@@ -96,10 +104,23 @@ const Login = ({ email, password, name }) => {
                 error={touched.password && Boolean(errors.password)}
                 helperText={touched.password && errors.password}
               />
+              <Box textAlign="right" mt={1}>
+                <Link to="/forget-password" style={{ textDecoration: 'none', color: '#3f51b5' }}>
+                  <Typography variant="body2">Forgot password?</Typography>
+                </Link>
+              </Box>
             </div>
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Login
             </Button>
+            <Box mt={2} textAlign="center">
+              <Typography variant="body2">
+                Don't have an account?{' '}
+                <Link to="/register" style={{ textDecoration: 'none', color: '#3f51b5' }}>
+                  Register
+                </Link>
+              </Typography>
+            </Box>
           </Box>
         </Form>
       )}

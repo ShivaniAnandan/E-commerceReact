@@ -44,6 +44,9 @@ const Navbars = () => {
                             <li className="nav-item">
                                 <Link className="nav-link text-dark" to="/products"><b>Products</b></Link>
                             </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-dark" to="/myorders"><b>My Orders</b></Link>
+                            </li>
                         </ul>
                         <form className="d-flex ms-2" onSubmit={handleSearchSubmit}>
                             <div className="input-group search-field">

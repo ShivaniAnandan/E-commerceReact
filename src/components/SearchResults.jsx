@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem, removeItem } from '../redux/ProductSlice';
 import { FaStar } from 'react-icons/fa'; // Import the star icon
+import axios from 'axios';
 
 const SearchResults = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -18,8 +19,9 @@ const SearchResults = () => {
   useEffect(() => {
     const fetchResults = async () => {
       // Fetch all products
-      const response = await fetch('https://fakestoreapi.com/products');
-      const data = await response.json();
+      const response = await axios.get('http://localhost:4000/api/products');
+      const data = await response.data;
+      console.log(data);
 
       // Filter products based on the query
       const filteredResults = data.filter(product =>
@@ -60,7 +62,7 @@ const SearchResults = () => {
       <div className="row">
         {searchResults.length > 0 ? (
           searchResults.map((item, index) => {
-            const isInCart = items.some((cartItem) => cartItem.id === item.id);
+            const isInCart = items.some((cartItem) => cartItem.id === item._id);
             return (
               <div
                 className="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center"
@@ -105,7 +107,7 @@ const SearchResults = () => {
                       fontSize: '12px',
                     }}
                   >
-                    {item.rating.rate} <FaStar color="gold" />
+                    {item.rating} <FaStar color="gold" />
                   </div>
                   <div
                     className="card-body p-2"
@@ -122,7 +124,7 @@ const SearchResults = () => {
                       <button
                         className={`btn ${isInCart ? 'btn-danger' : 'btn-primary'} mt-2`}
                         onClick={() =>
-                          isInCart ? handleRemoveFromCart(item.id) : handleAddToCart(item)
+                          isInCart ? handleRemoveFromCart(item._id) : handleAddToCart(item)
                         }
                       >
                         {isInCart ? 'Remove from Cart' : 'Add to Cart'}

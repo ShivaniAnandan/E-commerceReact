@@ -1,11 +1,10 @@
-// src/Register.jsx
-
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { TextField, Button, Box, InputAdornment } from '@mui/material';
+import { TextField, Button, Box, InputAdornment, Typography } from '@mui/material';
 import { AccountCircle, Email, Lock, CheckCircle } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
@@ -16,24 +15,31 @@ const validationSchema = Yup.object().shape({
     .required('Confirm password is required'),
 });
 
-const Register = ({ setName, setEmail, setPassword }) => {
+const Register = () => {
   const navigate = useNavigate();
+
+  const handleRegister = async (values) => {
+    try {
+      const response = await axios.post('http://localhost:4000/api/users/register', {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      });
+
+      if (response.status === 201) {
+        navigate('/login'); // Redirect to login after successful registration
+      }
+    } catch (error) {
+      console.error('Registration error:', error.response ? error.response.data.message : error.message);
+    }
+  };
+
   return (
     <Formik
       initialValues={{ name: '', email: '', password: '', confirmPassword: '' }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        setName(values.name);
-        setEmail(values.email);
-        setPassword(values.password);
-         // Store user data in localStorage
-         localStorage.setItem('user', JSON.stringify({
-          name: values.name,
-          email: values.email,
-          password: values.password
-        }));
-
-        navigate('/login'); // Redirect to login page after registration
+        handleRegister(values);
       }}
     >
       {({ errors, touched }) => (
@@ -122,9 +128,17 @@ const Register = ({ setName, setEmail, setPassword }) => {
                 helperText={touched.confirmPassword && errors.confirmPassword}
               />
             </div>
+
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Register
             </Button>
+
+            <Typography sx={{ textAlign: 'center', mt: 2 }}>
+              Already have an account?{' '}
+              <Button onClick={() => navigate('/login')} variant="text" color="primary">
+                Login
+              </Button>
+            </Typography>
           </Box>
         </Form>
       )}
