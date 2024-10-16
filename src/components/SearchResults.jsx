@@ -19,7 +19,7 @@ const SearchResults = () => {
   useEffect(() => {
     const fetchResults = async () => {
       // Fetch all products
-      const response = await axios.get('http://localhost:4000/api/products');
+      const response = await axios.get('https://e-commerce-backend-zxqf.onrender.com/api/products');
       const data = await response.data;
       console.log(data);
 

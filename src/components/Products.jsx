@@ -18,15 +18,14 @@ const Products = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(items);
+  
   // Fetch products from the API when the component mounts
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/products');
+        const response = await axios.get('https://e-commerce-backend-zxqf.onrender.com/api/products');
         const data = await response.data;
         dispatch(setProducts(data));
-        console.log(data);
       } catch (error) {
         console.error('Error fetching products:', error);
       }

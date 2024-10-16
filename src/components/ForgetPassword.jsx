@@ -18,7 +18,7 @@ const ForgetPassword = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:4000/api/users/forget-password', {
+      const response = await axios.post('https://e-commerce-backend-zxqf.onrender.com/api/users/forget-password', {
         email: values.email,
       });
 

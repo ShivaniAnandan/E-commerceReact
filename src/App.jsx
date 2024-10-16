@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import './App.css';
-import Navbar from './components/Navbar';
+import Navbarx from './components/Navbarx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Products from './components/Products';
-import Cart1 from './components/Cart';
+import Cart from './components/Cart';
 import { Provider, useDispatch } from 'react-redux';
 import { store } from './redux/store';
-import Navbars from './components/Navbars';
+import Navbar from './components/Navbar';
 import Register from './components/Register';
 import Login from './components/Login';
 import Checkout from './components/Checkout';
@@ -22,6 +22,8 @@ import Orders from './components/MyOrdersPage';
 import MyOrdersPage from './components/MyOrdersPage';
 import ForgetPassword from './components/ForgetPassword';
 import ResetPassword from './components/ResetPassword';
+import PublicRoute from './components/PublicRoute';
+import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   //creating products data
 //   const products = [
@@ -97,20 +99,29 @@ function App() {
 //   }
 // }, [dispatch]);
   
+const isAuthenticated = !!localStorage.getItem('token');
 
 return (
   <>
     <BrowserRouter>
-      {/* <Provider store={store}> */}
+      <Provider store={store}>
         <div>
-          <Navbars />
+          <Navbar />
         </div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/cart" element={<Cart1 />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login/>} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/register" element={
+             <PublicRoute isAuthenticated={isAuthenticated}>
+             <Register />
+             </PublicRoute>
+          } />
+          <Route path="/login" element={
+            <PublicRoute isAuthenticated={isAuthenticated}>
+            <Login/>
+            </PublicRoute>
+          } />
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/checkout" element={<Checkout />} />
@@ -118,9 +129,13 @@ return (
           <Route path="/search" element={<SearchResults />} />
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
           <Route path="/paymentfailure" element={<PaymentFailure />} />
-          <Route path="/myorders" element={<MyOrdersPage />} />
+          <Route path="/myorders" element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <MyOrdersPage />
+            </ProtectedRoute>
+          } />
         </Routes>
-      {/* </Provider> */}
+      </Provider>
     </BrowserRouter>
   </>
 );

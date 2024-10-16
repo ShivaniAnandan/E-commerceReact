@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { TextField, Button, Box, InputAdornment, Typography } from '@mui/material';
 import { AccountCircle, Email, Lock, CheckCircle } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ClipLoader } from 'react-spinners'; // Import the spinner
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
@@ -17,10 +18,12 @@ const validationSchema = Yup.object().shape({
 
 const Register = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // State to manage the loader
 
   const handleRegister = async (values) => {
+    setLoading(true); // Show loader when login request is initiated
     try {
-      const response = await axios.post('http://localhost:4000/api/users/register', {
+      const response = await axios.post('https://e-commerce-backend-zxqf.onrender.com/api/users/register', {
         name: values.name,
         email: values.email,
         password: values.password,
@@ -31,6 +34,8 @@ const Register = () => {
       }
     } catch (error) {
       console.error('Registration error:', error.response ? error.response.data.message : error.message);
+    }finally {
+      setLoading(false); // Hide loader when request is completed
     }
   };
 
@@ -128,10 +133,16 @@ const Register = () => {
                 helperText={touched.confirmPassword && errors.confirmPassword}
               />
             </div>
-
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Register
-            </Button>
+            {loading ? (
+              // Show the spinner while loading
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <ClipLoader color="#3f51b5" size={50} />
+              </Box>
+            ) : (
+              <Button type="submit" variant="contained" color="primary" fullWidth>
+                 Register
+              </Button>
+            )}
 
             <Typography sx={{ textAlign: 'center', mt: 2 }}>
               Already have an account?{' '}

@@ -22,7 +22,7 @@ const ResetPassword = () => {
     setError('');
 
     try {
-      const response = await axios.post(`http://localhost:4000/api/users/reset-password/${token}`, {
+      const response = await axios.post(`https://e-commerce-backend-zxqf.onrender.com/api/users/reset-password/${token}`, {
         newPassword: values.newPassword,
       });
 

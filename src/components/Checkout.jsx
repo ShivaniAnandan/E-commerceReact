@@ -210,7 +210,7 @@ const Checkout = () => {
     setLoading(true);
     try {
       // Create a payment intent on the server
-      const response = await axios.post('http://localhost:4000/api/orders/create-payment-intent', {
+      const response = await axios.post('https://e-commerce-backend-zxqf.onrender.com/api/orders/create-payment-intent', {
         orderItems,
         totalPrice: totalAmount,
       });

@@ -25,8 +25,7 @@ const Cart = () => {
   const user = localStorage.getItem('user');
   const userData = JSON.parse(user);
   const userId = userData.id; // Replace 'id' with the actual key used to store the ID
-  console.log(userId); 
-  console.log(items);
+  
   // Function to handle checkout process
   const handleCheckout = async () => {
     try {
@@ -43,7 +42,7 @@ const Cart = () => {
       qty: item.quantity || 1, // Change 'quantity' to 'qty', default to 1 if not available
       }));
 
-      const response = await axios.post('http://localhost:4000/api/orders/create-payment-intent', {
+      const response = await axios.post('https://e-commerce-backend-zxqf.onrender.com/api/orders/create-payment-intent', {
         userId: userId, // Replace with the actual user ID
         orderItems: orderItems,
       });

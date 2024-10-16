@@ -46,6 +46,9 @@ button img {
 .search-field{
   width:700px;
 }
+.form-control,.input-group-text{
+  border-radius: 18px;
+}
 .navbar{
   padding: 1rem 2rem;
 }

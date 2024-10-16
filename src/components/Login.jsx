@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { TextField, Button, Box, InputAdornment, Typography } from '@mui/material';
@@ -7,6 +7,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/UserSlice';
 import axios from 'axios';
+import { ClipLoader } from 'react-spinners'; // Import the spinner
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
@@ -16,9 +17,20 @@ const validationSchema = Yup.object().shape({
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false); // State to manage the loader
+
 
   const profileImages = [
-    // Add random profile image URLs here...
+    'https://t3.ftcdn.net/jpg/02/40/30/56/240_F_240305699_X3ky3vcpPRDNBtg1qjmLW7ntzPGU0eGN.jpg',
+    'https://t4.ftcdn.net/jpg/05/74/97/67/240_F_574976795_xGCzNlYpDw7wf6gSWFLVaFuTGhOMuaTV.jpg',
+    'https://t3.ftcdn.net/jpg/06/01/50/96/240_F_601509638_jDwIDvlnryPRhXPsBeW1nXv90pdlbykC.jpg',
+    'https://t4.ftcdn.net/jpg/05/80/60/33/240_F_580603305_ysEbDBvHCKM9TyzEINHyW614NWLdTe0b.jpg',
+    'https://t4.ftcdn.net/jpg/05/47/35/41/240_F_547354169_c1lbO3x3Xw5rwr9WThaHUamGSEZI4IsP.jpg',
+    'https://t4.ftcdn.net/jpg/07/31/57/43/240_F_731574325_KUHqpDJBMI4T4dIeoMS7GH0zDSQj0VlT.jpg',
+    'https://t4.ftcdn.net/jpg/05/59/46/33/240_F_559463395_dBqVnSCQ479taoyYSaohffGOLQiI3x5w.jpg',
+    'https://t4.ftcdn.net/jpg/07/57/31/69/240_F_757316903_KiJ2jGy5vQ0dB9ILtjFo6p48UZ7DAoxa.jpg',
+    'https://t3.ftcdn.net/jpg/06/21/27/04/240_F_621270406_n7Vx7a5RuRJVmaI1AEltnsfA2SjkOrrr.jpg',
+    'https://t4.ftcdn.net/jpg/03/28/94/79/240_F_328947974_26fQsrAPA5cLoL9fSfWZhLM58AQO6rCz.jpg',
   ];
 
   const getRandomProfileImage = () => {
@@ -27,8 +39,9 @@ const Login = () => {
   };
 
   const handleLogin = async (values) => {
+    setLoading(true); // Show loader when login request is initiated
     try {
-      const response = await axios.post('http://localhost:4000/api/users/login', {
+      const response = await axios.post('https://e-commerce-backend-zxqf.onrender.com/api/users/login', {
         email: values.email,
         password: values.password,
       }, { withCredentials: true });
@@ -51,6 +64,8 @@ const Login = () => {
     } catch (error) {
       alert('Invalid email or password');
       console.error('Login error:', error);
+    }finally {
+      setLoading(false); // Hide loader when request is completed
     }
   };
 
@@ -110,9 +125,16 @@ const Login = () => {
                 </Link>
               </Box>
             </div>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Login
-            </Button>
+            {loading ? (
+              // Show the spinner while loading
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <ClipLoader color="#3f51b5" size={50} />
+              </Box>
+            ) : (
+              <Button type="submit" variant="contained" color="primary" fullWidth>
+                Login
+              </Button>
+            )}
             <Box mt={2} textAlign="center">
               <Typography variant="body2">
                 Don't have an account?{' '}

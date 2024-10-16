@@ -17,7 +17,7 @@ const MyOrdersPage = () => {
             Authorization: `Bearer ${token}`
           }
         };
-        const { data } = await axios.get('http://localhost:4000/api/orders/myorders', config); // API call to get orders
+        const { data } = await axios.get('https://e-commerce-backend-zxqf.onrender.com/api/orders/myorders', config); // API call to get orders
         setOrders(data);
         setLoading(false);
       } catch (err) {

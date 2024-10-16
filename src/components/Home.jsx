@@ -11,10 +11,10 @@ const Home = () => {
             {/* Carousel Section */}
             <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
                 <div className="carousel-inner">
-                    <div className="carousel-item active" data-bs-interval="10000">
+                    <div className="carousel-item active" data-bs-interval="5000">
                         <img src="https://mercury.akamaized.net/i/b9eb95acf58613601c0d982e6e3d9b93_102354_0.png" className="d-block w-100" alt="..." />
                     </div>
-                    <div className="carousel-item" data-bs-interval="2000">
+                    <div className="carousel-item" data-bs-interval="5000">
                         <img src="https://assets.ajio.com/cms/AJIO/WEB/D-1.0-UHP-08082024-TopBanner-Z3-P3-DAMILANO-HIDESIGN-UPTO60.jpg" className="d-block w-100" alt="..." />
                     </div>
                     <div className="carousel-item">
@@ -50,7 +50,7 @@ const Home = () => {
             </div>
             <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
                 <div className="carousel-inner">
-                    <div className="carousel-item active" data-bs-interval="10000">
+                    <div className="carousel-item active" data-bs-interval="5000">
                         <img src="https://media6.ppl-media.com/tr:w-1280,c-at_max,pr-true,dpr-2/mediafiles/ecomm/misc/1723094952_bestsellerfreebie_web-1.jpg" className="d-block w-100" alt="..." />
                     </div>
                     <div className="carousel-item">
@@ -68,7 +68,7 @@ const Home = () => {
             </div>
             <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
                 <div className="carousel-inner">
-                    <div className="carousel-item active" data-bs-interval="10000">
+                    <div className="carousel-item active" data-bs-interval="5000">
                         <img src="https://assets.ajio.com/cms/AJIO/WEB/1440x128-%20UHP%20web%20RRL_SBI.jpg" className="d-block w-100" alt="..." />
                     </div>
                     <div className="carousel-item">
